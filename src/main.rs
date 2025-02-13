@@ -21,7 +21,7 @@ unsafe fn main() -> ! {
         let ram_start = &_ram_start as *const u32 as u32;
         // Verify that we're running from RAM
         assert!(current_pc >= ram_start);
-        blinky_debug(10);
+        blinky_debug(100);
         loop {}
     }
 }
