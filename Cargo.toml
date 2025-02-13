@@ -1,0 +1,48 @@
+[package]
+name = "run-from-ram"
+version = "0.1.0"
+edition = "2021"
+readme = "README.md"
+
+[dependencies]
+embassy-nrf = { version = "0.3.1", features = ["unstable-pac", "nrf52840"] }
+cortex-m = { version= "0.7.7", features = ["critical-section-single-core"] }
+cortex-m-rt = { version = "0.7.5" }
+
+[patch.crates-io]
+embassy-nrf = { git = "https://github.com/embassy-rs/embassy", rev="92326f10b5be1d6fdc6bd414eb0656e3890bd825"}
+embassy-embedded-hal = { git = "https://github.com/embassy-rs/embassy", rev="92326f10b5be1d6fdc6bd414eb0656e3890bd825"}
+
+[profile.dev]
+debug = 2
+debug-assertions = true
+opt-level = 's'
+overflow-checks = true
+
+[profile.release]
+codegen-units = 1
+debug = 2
+debug-assertions = false
+incremental = false
+lto = 'fat'
+opt-level = 'z'
+overflow-checks = false
+
+# do not optimize proc-macro crates = faster builds from scratch
+[profile.dev.build-override]
+codegen-units = 8
+debug = false
+debug-assertions = false
+opt-level = 0
+overflow-checks = false
+
+[profile.release.build-override]
+codegen-units = 8
+debug = false
+debug-assertions = false
+opt-level = 0
+overflow-checks = false
+
+[lints.rust]
+unused-imports = "deny"
+unused-must-use = "deny"
